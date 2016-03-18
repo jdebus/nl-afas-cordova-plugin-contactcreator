@@ -1,0 +1,33 @@
+{
+  "name": "nl-afas-cordova-plugin-contactcreator",
+  "version": "0.1.0",
+  "description": "A plugin that lets you insert a new contact into your phone's address book",
+  "cordova": {
+    "id": "nl-afas-cordova-plugin-contactcreator",
+    "platforms": [
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dickverweij/nl-afas-cordova-plugin-contactcreator.git"
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "address",
+    "contact"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0.0"
+    }
+  ],
+  "author": "Steffan Mitrovic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dickverweij/nl-afas-cordova-plugin-contactcreator/issues"
+  },
+  "homepage": "https://github.com/dickverweij/nl-afas-cordova-plugin-contactcreator#readme"
+}

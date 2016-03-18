@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://www.phonegap.com/ns/plugins/1.0"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    id="nl-afas-cordova-plugin-contactcreator"
+    version="0.1.0">
+	
+	<engines>
+        <engine name="cordova" version=">=3.0.0" />
+    </engines>
+	
+	<name>ContactCreator</name>
+	
+	<description>A plugin that lets you insert a new contact into your phone's address book</description>
+	
+	<author>AFAS Software</author>
+	
+	<keywords>contact, contacts, creator, insert, insert contact, create contact, add new contact</keywords>
+	
+	<license>MIT</license>
+    
+	<js-module src="www/ContactCreator.js" name="ContactCreator">
+        <clobbers target="cordova.plugins.ContactCreator" />
+    </js-module>
+
+    <!-- android -->
+    <platform name="android">
+	<source-file src="src/android/ContactCreatorPlugin.java" target-dir="src/nl/afas/cordova/plugin/contactcreator" />
+        <config-file target="res/xml/config.xml" parent="/*">
+            <feature name="ContactCreator">
+                <param name="android-package" value="nl.afas.cordova.plugin.contactcreator.ContactCreatorPlugin"/>
+            </feature>
+        </config-file>
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="android.permission.READ_CONTACTS"/>
+            <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
+        </config-file>        
+    </platform>
+
+</plugin>
