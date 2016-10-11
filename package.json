@@ -1,6 +1,6 @@
 {
   "name": "nl-afas-cordova-plugin-contactcreator",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A plugin that lets you insert a new contact into your phone's address book",
   "cordova": {
     "id": "nl-afas-cordova-plugin-contactcreator",
