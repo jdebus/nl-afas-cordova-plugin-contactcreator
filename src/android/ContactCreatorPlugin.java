@@ -1,20 +1,10 @@
 package nl.afas.cordova.plugin.contactcreator;
 
-import android.accounts.Account;
-import android.app.Activity;
+import android.accounts.AccountManager;
 import android.content.ContentProviderOperation;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
-import android.database.Cursor;
-import android.net.Uri;
 import android.provider.ContactsContract;
-import android.provider.ContactsContract.Intents;
-import android.provider.ContactsContract.PhoneLookup;
-import android.util.Log;
-import android.widget.Toast;
-import android.accounts.AccountManager;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -23,12 +13,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
@@ -37,8 +21,6 @@ public class ContactCreatorPlugin extends CordovaPlugin {
 
   private Context context;
   private CallbackContext callbackContext;
-  private static final int CHOOSE_CONTACT = 1;
-  private static final int INSERT_CONTACT = 2;
 
   private static JSONObject contact;
 
@@ -49,8 +31,6 @@ public class ContactCreatorPlugin extends CordovaPlugin {
 
 
     if (action.equals("addContact")) {
-      int phone_count = 0;
-      int email_count = 0;
       Intent intent = new Intent(Intent.ACTION_INSERT);
       intent.setType(ContactsContract.RawContacts.CONTENT_TYPE);
 
@@ -106,7 +86,7 @@ public class ContactCreatorPlugin extends CordovaPlugin {
                 .build());
 
         if(mobileWork != null){
-              ops.add(ContentProviderOperation.
+          ops.add(ContentProviderOperation.
                   newInsert(ContactsContract.Data.CONTENT_URI)
                   .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
                   .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Phone.CONTENT_ITEM_TYPE)
