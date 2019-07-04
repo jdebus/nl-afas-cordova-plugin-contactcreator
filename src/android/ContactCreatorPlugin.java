@@ -98,14 +98,14 @@ public class ContactCreatorPlugin extends CordovaPlugin {
 
   private boolean SaveContact(String accountName, String accountType) {
     try {
-      String displayName = contact.optString("displayName");
+      String displayName = contact.optString("name");
       String phoneWork = contact.has("phoneWork") ? contact.getString("phoneWork") : null;
-      String mobileWork = contact.has("mobileWork") ? contact.getString("mobileWork") : null;
-      String emailWork = contact.has("emailWork") ? contact.getString("emailWork") : null;
+      String mobileWork = contact.has("phoneMobile") ? contact.getString("phoneMobile") : null;
+      String emailWork = contact.has("email") ? contact.getString("email") : null;
       String street = contact.has("street") ? contact.getString("street") : null;
-      String postCode = contact.has("postCode") ? contact.getString("postCode") : null;
+      String postCode = contact.has("zipCode") ? contact.getString("zipCode") : null;
       String city = contact.has("city") ? contact.getString("city") : null;
-      String organization = contact.has("organization") ? contact.getString("organization") : null;
+      String organization = contact.has("companyName") ? contact.getString("companyName") : null;
       String jobTitle = contact.has("jobTitle") ? contact.getString("jobTitle") : null;
 
       ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
