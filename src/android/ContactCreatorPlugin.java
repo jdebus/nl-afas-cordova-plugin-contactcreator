@@ -4,7 +4,10 @@ import android.accounts.AccountManager;
 import android.content.ContentProviderOperation;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.provider.ContactsContract;
+import android.util.Base64;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -13,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
@@ -70,6 +74,10 @@ public class ContactCreatorPlugin extends CordovaPlugin {
     return false;
   }
 
+  private Bitmap base64ToBitmap(String b64) {
+    byte[] imageAsBytes = Base64.decode(b64.getBytes(), Base64.DEFAULT);
+    return BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+  }
   
 
   @Override
@@ -107,6 +115,7 @@ public class ContactCreatorPlugin extends CordovaPlugin {
       String city = contact.has("city") ? contact.getString("city") : null;
       String organization = contact.has("companyName") ? contact.getString("companyName") : null;
       String jobTitle = contact.has("jobTitle") ? contact.getString("jobTitle") : null;
+      String image = contact.has("imageData") ? contact.getString("imageData") : null;
 
       ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
 
@@ -183,8 +192,36 @@ public class ContactCreatorPlugin extends CordovaPlugin {
 
               .build());
 
+      if(image != null) {
+        image = image.substring(image.indexOf(",") + 1);
+          byte[] imageAsBytes = Base64.decode(image.getBytes(), Base64.DEFAULT);
+          Bitmap mBitmap = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length);
+          ByteArrayOutputStream stream = new ByteArrayOutputStream();
+          if(mBitmap!=null){    // If an image is selected successfully
+            mBitmap.compress(Bitmap.CompressFormat.PNG , 75, stream);
+
+            // Adding insert operation to operations list
+            // to insert Photo in the table ContactsContract.Data
+            ops.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, rawContactInsertIndex)
+                    .withValue(ContactsContract.Data.IS_SUPER_PRIMARY, 1)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Photo.PHOTO,stream.toByteArray())
+                    .build());
+
+            try {
+                stream.flush();
+            }catch (Exception e) {
+                
+            }
+          }
+      }
+
       context.getContentResolver().applyBatch(ContactsContract.AUTHORITY, ops);
-    } catch(Exception ex) { return false;  }
+    } catch(Exception ex)
+    {
+        return false;
+    }
 
     return true;
   } 
